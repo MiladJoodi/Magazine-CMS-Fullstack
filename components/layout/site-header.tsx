@@ -6,8 +6,9 @@ import { Separator } from "@/components/ui/separator";
 
 const navLinks = [
   { href: "/", label: "Home" },
-  { href: "#categories", label: "Categories" },
-  { href: "#about", label: "About" },
+  { href: "/#categories", label: "Categories" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export function SiteHeader() {
@@ -16,7 +17,7 @@ export function SiteHeader() {
       <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center justify-between gap-6">
           <Link href="/" className="font-heading text-xl font-semibold tracking-tight">
-            The Daily Chronicle
+            Northline
           </Link>
           <nav className="hidden items-center gap-6 md:flex" aria-label="Main">
             {navLinks.map((link) => (

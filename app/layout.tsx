@@ -21,7 +21,7 @@ const newsreader = Newsreader({
 });
 
 export const metadata: Metadata = {
-  title: "The Daily Chronicle | Stories on culture, cities, and ideas",
+  title: "Northline | Stories on culture, cities, and ideas",
   description:
     "Independent magazine-style reporting on culture, cities, media, and the ideas shaping how we live.",
 };

@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 
 const authorLinks = [
-  { href: "https://github.com/MiladJoodi", label: "GitHub" },
   { href: "https://www.linkedin.com/in/joodi/", label: "LinkedIn" },
   {
     href: "https://github.com/MiladJoodi/magazine-cms-fullstack",
@@ -12,7 +11,8 @@ const authorLinks = [
 ];
 
 const footerLinks = [
-  { href: "#", label: "About" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
   { href: "#", label: "Privacy" },
   { href: "#", label: "Terms" },
 ];
@@ -23,7 +23,7 @@ export function SiteFooter() {
       <div className="mx-auto max-w-7xl px-4 py-10">
         <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
           <div className="max-w-sm space-y-2">
-            <p className="font-heading text-lg font-semibold">The Daily Chronicle</p>
+            <p className="font-heading text-lg font-semibold">Northline</p>
             <p className="text-sm text-muted-foreground">
               Independent reporting on culture, cities, and the ideas shaping how we
               live. Stories worth your attention.
@@ -48,7 +48,7 @@ export function SiteFooter() {
             <span>
               Made with{" "}
               <span className="text-red-500" aria-hidden>
-                ♥
+              ❤️
               </span>{" "}
               by{" "}
               <a

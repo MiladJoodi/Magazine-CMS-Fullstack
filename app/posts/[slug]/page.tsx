@@ -38,7 +38,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${post.title} | The Daily Chronicle`,
+    title: `${post.title} | Northline`,
     description: post.excerpt,
   };
 }

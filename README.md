@@ -8,7 +8,7 @@ Full-stack magazine platform — **Next.js**, **Prisma**, **REST API**, comments
 
 ## Overview
 
-**The Daily Chronicle** is a magazine-style content site with a homepage feed, trending sidebar, and individual article pages. The frontend is built with Next.js App Router and shadcn/ui. Data is currently mocked in TypeScript modules, structured so it can be swapped for Prisma and API routes without rewriting the UI.
+**Northline** is a magazine-style content site with a homepage feed, trending sidebar, and individual article pages. The frontend is built with Next.js App Router and shadcn/ui. Data is currently mocked in TypeScript modules, structured so it can be swapped for Prisma and API routes without rewriting the UI.
 
 ## Features
 
