@@ -1,7 +1,16 @@
 import { getAllPosts } from "@/lib/mock/posts";
+import {
+  addToStorageList,
+  readStorageList,
+} from "@/lib/mock/storage-list";
 import type { Author } from "@/lib/types/author";
 
 export const DEMO_AUTHORS_STORAGE_KEY = "northline-demo-authors";
+export const DEMO_DELETED_AUTHORS_STORAGE_KEY = "northline-demo-deleted-authors";
+
+function getDeletedAuthorIds(): Set<string> {
+  return new Set(readStorageList(DEMO_DELETED_AUTHORS_STORAGE_KEY));
+}
 
 /** Static author seed data */
 export const MOCK_AUTHORS: Author[] = [
@@ -51,6 +60,7 @@ export function getAuthorsForServer(): Author[] {
 
 /** Client: seed + localStorage extras from CMS */
 export function getAllAuthorsMerged(): Author[] {
+  const deleted = getDeletedAuthorIds();
   const stored = getStoredAuthors();
   const names = new Set(MOCK_AUTHORS.map((a) => a.name.toLowerCase()));
   const merged = [...MOCK_AUTHORS];
@@ -60,7 +70,9 @@ export function getAllAuthorsMerged(): Author[] {
       names.add(author.name.toLowerCase());
     }
   }
-  return merged.sort((a, b) => a.name.localeCompare(b.name));
+  return merged
+    .filter((author) => !deleted.has(author.id))
+    .sort((a, b) => a.name.localeCompare(b.name));
 }
 
 export function addDemoAuthor(input: {
@@ -93,6 +105,42 @@ export function addDemoAuthor(input: {
   saveStoredAuthors(stored);
 
   return { ok: true, author };
+}
+
+export function deleteDemoAuthor(
+  id: string
+): { ok: true } | { ok: false; error: string } {
+  const author = getAllAuthorsMerged().find((a) => a.id === id);
+  if (!author) {
+    return { ok: false, error: "Author not found." };
+  }
+
+  const postCount = countPostsByAuthor(author.name);
+  if (postCount > 0) {
+    return {
+      ok: false,
+      error: `Cannot delete: ${postCount} post(s) use this author.`,
+    };
+  }
+
+  const stored = getStoredAuthors();
+  const storedIndex = stored.findIndex((a) => a.id === id);
+  if (storedIndex >= 0) {
+    stored.splice(storedIndex, 1);
+    saveStoredAuthors(stored);
+    return { ok: true };
+  }
+
+  addToStorageList(DEMO_DELETED_AUTHORS_STORAGE_KEY, id);
+  return { ok: true };
+}
+
+export function canDeleteAuthor(id: string): boolean {
+  const author = getAllAuthorsMerged().find((a) => a.id === id);
+  if (!author) {
+    return false;
+  }
+  return countPostsByAuthor(author.name) === 0;
 }
 
 export function countPostsByAuthor(authorName: string): number {

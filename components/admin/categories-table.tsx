@@ -4,26 +4,26 @@ import { useCallback, useEffect, useState } from "react";
 
 import { CmsDeleteButton } from "@/components/admin/cms-delete-button";
 import {
-  canDeleteAuthor,
-  countPostsByAuthor,
-  deleteDemoAuthor,
-  getAllAuthorsMerged,
-  getBaseAuthors,
+  canDeleteCategory,
+  countPostsByCategory,
+  deleteDemoCategory,
+  getAllCategoriesMerged,
+  getBaseCategories,
 } from "@/lib/mock";
-import type { Author } from "@/lib/types/author";
+import type { Category } from "@/lib/types/category";
 
-export function AuthorsTable() {
-  const [authors, setAuthors] = useState<Author[]>([]);
+export function CategoriesTable() {
+  const [categories, setCategories] = useState<Category[]>([]);
 
   const refresh = useCallback(() => {
-    setAuthors(getAllAuthorsMerged());
+    setCategories(getAllCategoriesMerged());
   }, []);
 
   useEffect(() => {
     refresh();
   }, [refresh]);
 
-  const baseIds = new Set(getBaseAuthors().map((a) => a.id));
+  const baseSlugs = new Set(getBaseCategories().map((c) => c.slug));
 
   return (
     <div className="overflow-x-auto rounded-xl border bg-card">
@@ -38,35 +38,37 @@ export function AuthorsTable() {
           </tr>
         </thead>
         <tbody>
-          {authors.map((author) => {
-            const deletable = canDeleteAuthor(author.id);
-            const postCount = countPostsByAuthor(author.name);
+          {categories.map((category) => {
+            const deletable = canDeleteCategory(category.slug);
+            const postCount = countPostsByCategory(category.name);
             return (
-            <tr key={author.id} className="border-b last:border-0">
+            <tr key={category.slug} className="border-b last:border-0">
               <td className="px-4 py-3">
-                <p className="font-medium">{author.name}</p>
-                {author.bio ? (
-                  <p className="text-xs text-muted-foreground">{author.bio}</p>
-                ) : null}
-              </td>
-              <td className="px-4 py-3 text-muted-foreground">{author.slug}</td>
-              <td className="px-4 py-3 text-muted-foreground">
-                {countPostsByAuthor(author.name)}
+                <p className="font-medium">{category.name}</p>
+                <p className="text-xs text-muted-foreground">
+                  {category.description}
+                </p>
               </td>
               <td className="px-4 py-3 text-muted-foreground">
-                {baseIds.has(author.id) ? "Mock data" : "Added in CMS"}
+                {category.slug}
+              </td>
+              <td className="px-4 py-3 text-muted-foreground">
+                {countPostsByCategory(category.name)}
+              </td>
+              <td className="px-4 py-3 text-muted-foreground">
+                {baseSlugs.has(category.slug) ? "Mock data" : "Added in CMS"}
               </td>
               <td className="px-4 py-3">
                 <div className="flex justify-end">
                   <CmsDeleteButton
-                    itemLabel={author.name}
+                    itemLabel={category.name}
                     disabled={!deletable}
                     disabledTitle={
                       postCount > 0
-                        ? `${postCount} post(s) use this author`
+                        ? `${postCount} post(s) use this category`
                         : undefined
                     }
-                    onDelete={() => deleteDemoAuthor(author.id)}
+                    onDelete={() => deleteDemoCategory(category.slug)}
                     onDeleted={refresh}
                   />
                 </div>

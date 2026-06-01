@@ -9,6 +9,7 @@ import {
   LogOut,
   PlusCircle,
   Settings,
+  Tags,
   Users,
 } from "lucide-react";
 
@@ -21,6 +22,7 @@ const navItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, adminOnly: false },
   { href: "/admin/posts", label: "Posts", icon: FileText, adminOnly: false },
   { href: "/admin/posts/new", label: "New post", icon: PlusCircle, adminOnly: false },
+  { href: "/admin/categories", label: "Categories", icon: Tags, adminOnly: true },
   { href: "/admin/authors", label: "Authors", icon: Users, adminOnly: true },
   { href: "/admin/settings", label: "Settings", icon: Settings, adminOnly: true },
 ];
@@ -44,6 +46,9 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       return;
     }
     if (isAuthor && pathname.startsWith("/admin/authors")) {
+      router.replace("/admin/posts");
+    }
+    if (isAuthor && pathname.startsWith("/admin/categories")) {
       router.replace("/admin/posts");
     }
     if (isAuthor && pathname.startsWith("/admin/settings")) {

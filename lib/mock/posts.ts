@@ -3,9 +3,37 @@ import {
   getCategoryBySlug,
   getCategoryNames,
 } from "@/lib/mock/categories";
+import {
+  addToStorageList,
+  readStorageList,
+} from "@/lib/mock/storage-list";
 import type { Post, PostDetail } from "@/lib/types/post";
 
+export const DEMO_DELETED_POSTS_STORAGE_KEY = "northline-demo-deleted-posts";
+
 export const CATEGORIES = getCategoryNames();
+
+function getDeletedPostSlugs(): Set<string> {
+  return new Set(readStorageList(DEMO_DELETED_POSTS_STORAGE_KEY));
+}
+
+function getActivePosts(): Post[] {
+  const deleted = getDeletedPostSlugs();
+  if (deleted.size === 0) {
+    return MOCK_POSTS;
+  }
+  return MOCK_POSTS.filter((post) => !deleted.has(post.slug));
+}
+
+export function deleteDemoPost(
+  slug: string
+): { ok: true } | { ok: false; error: string } {
+  if (!MOCK_POSTS.some((post) => post.slug === slug)) {
+    return { ok: false, error: "Post not found." };
+  }
+  addToStorageList(DEMO_DELETED_POSTS_STORAGE_KEY, slug);
+  return { ok: true };
+}
 
 function buildArticleBody(post: Post): string[] {
   const topic = post.category.toLowerCase();
@@ -157,13 +185,20 @@ export const MOCK_POSTS: Post[] = [
   },
 ];
 
+export function countPostsByCategory(categoryName: string): number {
+  const lower = categoryName.toLowerCase();
+  return getActivePosts().filter(
+    (post) => post.category.toLowerCase() === lower
+  ).length;
+}
+
 export function getPostsByCategory(categorySlugOrName: string): Post[] {
   const category =
     getCategoryBySlug(categorySlugOrName) ?? getCategoryByName(categorySlugOrName);
 
   const categoryName = category?.name ?? categorySlugOrName;
 
-  return [...MOCK_POSTS]
+  return [...getActivePosts()]
     .filter((post) => post.category.toLowerCase() === categoryName.toLowerCase())
     .sort(
       (a, b) =>
@@ -172,15 +207,20 @@ export function getPostsByCategory(categorySlugOrName: string): Post[] {
 }
 
 export function getFeaturedPost(): Post {
-  const featured = MOCK_POSTS.find((post) => post.featured);
-  if (!featured) {
-    throw new Error("No featured post defined in mock data");
+  const posts = getActivePosts();
+  const featured = posts.find((post) => post.featured);
+  if (featured) {
+    return featured;
   }
-  return featured;
+  const fallback = posts[0];
+  if (!fallback) {
+    throw new Error("No posts available");
+  }
+  return fallback;
 }
 
 export function getLatestPosts(limit = 6): Post[] {
-  return [...MOCK_POSTS]
+  return [...getActivePosts()]
     .filter((post) => !post.featured)
     .sort(
       (a, b) =>
@@ -190,17 +230,17 @@ export function getLatestPosts(limit = 6): Post[] {
 }
 
 export function getTrendingPosts(limit = 5): Post[] {
-  return [...MOCK_POSTS]
+  return [...getActivePosts()]
     .sort((a, b) => b.viewCount - a.viewCount)
     .slice(0, limit);
 }
 
 export function getAllPosts(): Post[] {
-  return [...MOCK_POSTS];
+  return [...getActivePosts()];
 }
 
 export function getPostBySlug(slug: string): PostDetail | undefined {
-  const post = MOCK_POSTS.find((item) => item.slug === slug);
+  const post = getActivePosts().find((item) => item.slug === slug);
   if (!post) {
     return undefined;
   }
@@ -208,19 +248,20 @@ export function getPostBySlug(slug: string): PostDetail | undefined {
 }
 
 export function getAllPostSlugs(): string[] {
-  return MOCK_POSTS.map((post) => post.slug);
+  return getActivePosts().map((post) => post.slug);
 }
 
 export function getRelatedPosts(slug: string, limit = 4): Post[] {
-  const current = MOCK_POSTS.find((post) => post.slug === slug);
+  const posts = getActivePosts();
+  const current = posts.find((post) => post.slug === slug);
   if (!current) {
     return [];
   }
 
-  const sameCategory = MOCK_POSTS.filter(
+  const sameCategory = posts.filter(
     (post) => post.slug !== slug && post.category === current.category
   );
-  const others = MOCK_POSTS.filter(
+  const others = posts.filter(
     (post) => post.slug !== slug && post.category !== current.category
   );
 

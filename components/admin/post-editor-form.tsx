@@ -7,7 +7,7 @@ import { CheckCircle2, Loader2 } from "lucide-react";
 import { useAuth } from "@/components/auth/auth-provider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CATEGORIES, getAllAuthorsMerged } from "@/lib/mock";
+import { getAllAuthorsMerged, getCategoryNamesMerged } from "@/lib/mock";
 import { selectClassName } from "@/lib/select-styles";
 
 type PostEditorFormProps = {
@@ -30,12 +30,25 @@ export function PostEditorForm({
   const [title, setTitle] = useState(initialTitle);
   const [slug, setSlug] = useState("");
   const [excerpt, setExcerpt] = useState("");
-  const [category, setCategory] = useState<string>(
-    initialCategory ?? CATEGORIES[0] ?? "Urbanism"
-  );
+  const [categoryOptions, setCategoryOptions] = useState<string[]>([]);
+  const [category, setCategory] = useState<string>(initialCategory ?? "Urbanism");
   const [author, setAuthor] = useState(initialAuthor);
   const [body, setBody] = useState("");
   const [featured, setFeatured] = useState(false);
+
+  useEffect(() => {
+    const names = getCategoryNamesMerged();
+    setCategoryOptions(names);
+    setCategory((current) => {
+      if (names.includes(current)) {
+        return current;
+      }
+      if (initialCategory && names.includes(initialCategory)) {
+        return initialCategory;
+      }
+      return names[0] ?? current;
+    });
+  }, [initialCategory]);
 
   useEffect(() => {
     if (!authReady) {
@@ -159,7 +172,7 @@ export function PostEditorForm({
             disabled={status === "saving"}
             className={selectClassName}
           >
-            {CATEGORIES.map((cat) => (
+            {categoryOptions.map((cat) => (
               <option key={cat} value={cat}>
                 {cat}
               </option>
