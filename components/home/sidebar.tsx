@@ -48,9 +48,9 @@ export function Sidebar({ trending, className }: SidebarProps) {
         <CardContent>
           <div className="flex flex-wrap gap-2">
             {categories.map((category) => (
-              <Badge key={category.slug} variant="outline" render={<Link href={categoryHref(category.slug)} />}>
-                {category.name}
-              </Badge>
+              <Link key={category.slug} href={categoryHref(category.slug)}>
+                <Badge variant="outline">{category.name}</Badge>
+              </Link>
             ))}
           </div>
         </CardContent>

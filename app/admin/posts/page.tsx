@@ -1,8 +1,7 @@
-import Link from "next/link";
 import { Pencil, PlusCircle } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button-link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatDate } from "@/lib/format";
 import { getAllPosts } from "@/lib/mock";
@@ -27,10 +26,10 @@ export default function AdminPostsPage() {
             Manage articles shown on the public site (mock data).
           </p>
         </div>
-        <Button render={<Link href="/admin/posts/new" />}>
+        <ButtonLink href="/admin/posts/new">
           <PlusCircle aria-hidden />
           New post
-        </Button>
+        </ButtonLink>
       </div>
 
       <Card>
@@ -73,21 +72,22 @@ export default function AdminPostsPage() {
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex justify-end gap-2">
-                        <Button
+                        <ButtonLink
+                          href={`/admin/posts/${post.slug}/edit`}
                           variant="outline"
                           size="sm"
-                          render={<Link href={`/admin/posts/${post.slug}/edit`} />}
                         >
                           <Pencil className="size-3.5" aria-hidden />
                           Edit
-                        </Button>
-                        <Button
+                        </ButtonLink>
+                        <ButtonLink
+                          href={postHref(post.slug)}
+                          target="_blank"
                           variant="ghost"
                           size="sm"
-                          render={<Link href={postHref(post.slug)} target="_blank" />}
                         >
                           View
-                        </Button>
+                        </ButtonLink>
                       </div>
                     </td>
                   </tr>

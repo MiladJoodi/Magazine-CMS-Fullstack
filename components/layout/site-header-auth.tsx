@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { LayoutDashboard, LogIn, LogOut, UserPlus } from "lucide-react";
 
 import { useAuth } from "@/components/auth/auth-provider";
 import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button-link";
 
 export function SiteHeaderAuth() {
   const { isReady, isAdmin, isAuthor, canAccessCms, isLoggedIn, user, logout } =
@@ -23,14 +23,14 @@ export function SiteHeaderAuth() {
           {user.name}
         </span>
         {canAccessCms ? (
-          <Button
+          <ButtonLink
+            href={isAuthor ? "/admin/posts" : "/admin"}
             variant="outline"
             size="sm"
-            render={<Link href={isAuthor ? "/admin/posts" : "/admin"} />}
           >
             <LayoutDashboard aria-hidden />
             CMS
-          </Button>
+          </ButtonLink>
         ) : null}
         <Button
           type="button"
@@ -50,14 +50,14 @@ export function SiteHeaderAuth() {
 
   return (
     <div className="flex items-center gap-2">
-      <Button variant="outline" size="sm" render={<Link href="/register" />}>
+      <ButtonLink href="/register" variant="outline" size="sm">
         <UserPlus aria-hidden />
         Sign up
-      </Button>
-      <Button variant="default" size="sm" render={<Link href="/login" />}>
+      </ButtonLink>
+      <ButtonLink href="/login" variant="default" size="sm">
         <LogIn aria-hidden />
         Login
-      </Button>
+      </ButtonLink>
     </div>
   );
 }

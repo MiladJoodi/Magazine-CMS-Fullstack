@@ -1,8 +1,6 @@
-import Link from "next/link";
-
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
-import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button-link";
 
 export default function CategoryNotFound() {
   return (
@@ -13,7 +11,7 @@ export default function CategoryNotFound() {
         <p className="max-w-md text-muted-foreground">
           We could not find that topic. Browse all categories instead.
         </p>
-        <Button render={<Link href="/categories" />}>All categories</Button>
+        <ButtonLink href="/categories">All categories</ButtonLink>
       </main>
       <SiteFooter />
     </>

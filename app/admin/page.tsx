@@ -1,8 +1,7 @@
-import Link from "next/link";
 import { Eye, FileText, MessageSquare, PlusCircle } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button-link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAllPosts } from "@/lib/mock";
 import { postHref } from "@/lib/post-url";
@@ -24,10 +23,10 @@ export default function AdminDashboardPage() {
           <h1 className="font-heading text-3xl font-semibold">Dashboard</h1>
           <p className="text-muted-foreground">Overview of your magazine content.</p>
         </div>
-        <Button render={<Link href="/admin/posts/new" />}>
+        <ButtonLink href="/admin/posts/new">
           <PlusCircle aria-hidden />
           New post
-        </Button>
+        </ButtonLink>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
@@ -80,9 +79,15 @@ export default function AdminDashboardPage() {
               <p className="font-medium">{featured.title}</p>
               <div className="flex flex-wrap gap-2">
                 <Badge variant="secondary">{featured.category}</Badge>
-                <Button variant="link" size="sm" className="h-auto p-0" render={<Link href={postHref(featured.slug)} target="_blank" />}>
+                <ButtonLink
+                  href={postHref(featured.slug)}
+                  target="_blank"
+                  variant="link"
+                  size="sm"
+                  className="h-auto p-0"
+                >
                   View on site
-                </Button>
+                </ButtonLink>
               </div>
             </>
           ) : (

@@ -1,8 +1,6 @@
-import Link from "next/link";
-
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
-import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button-link";
 
 export default function PostNotFound() {
   return (
@@ -13,7 +11,7 @@ export default function PostNotFound() {
         <p className="max-w-md text-muted-foreground">
           The article you are looking for may have been moved or removed.
         </p>
-        <Button render={<Link href="/" />}>Return home</Button>
+        <ButtonLink href="/">Return home</ButtonLink>
       </main>
       <SiteFooter />
     </>

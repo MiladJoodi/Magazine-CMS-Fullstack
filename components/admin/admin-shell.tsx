@@ -14,6 +14,7 @@ import {
 
 import { useAuth } from "@/components/auth/auth-provider";
 import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button-link";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -100,9 +101,9 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           })}
         </nav>
         <div className="space-y-2 border-t p-3">
-          <Button variant="outline" size="sm" className="w-full" render={<Link href="/" />}>
+          <ButtonLink href="/" variant="outline" size="sm" className="w-full">
             View site
-          </Button>
+          </ButtonLink>
           <Button
             type="button"
             variant="ghost"
