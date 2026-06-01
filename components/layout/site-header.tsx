@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { Search } from "lucide-react";
 
+import { SiteHeaderAuth } from "@/components/layout/site-header-auth";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 
 const navLinks = [
   { href: "/", label: "Home" },
-  { href: "/#categories", label: "Categories" },
+  { href: "/categories", label: "Categories" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
@@ -31,18 +32,21 @@ export function SiteHeader() {
             ))}
           </nav>
         </div>
-        <div className="relative w-full sm:max-w-xs">
-          <Search
-            className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground"
-            aria-hidden
-          />
-          <Input
-            type="search"
-            placeholder="Search stories..."
-            className="pl-8"
-            aria-label="Search stories"
-            readOnly
-          />
+        <div className="flex w-full flex-col gap-3 sm:max-w-md sm:flex-row sm:items-center sm:justify-end">
+          <div className="relative flex-1">
+            <Search
+              className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground"
+              aria-hidden
+            />
+            <Input
+              type="search"
+              placeholder="Search stories..."
+              className="pl-8"
+              aria-label="Search stories"
+              readOnly
+            />
+          </div>
+          <SiteHeaderAuth />
         </div>
       </div>
       <nav

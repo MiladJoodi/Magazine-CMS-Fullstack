@@ -13,6 +13,7 @@ const authorLinks = [
 const footerLinks = [
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
+  { href: "/categories", label: "Categories" },
   { href: "#", label: "Privacy" },
   { href: "#", label: "Terms" },
 ];
@@ -44,11 +45,11 @@ export function SiteFooter() {
         </div>
         <Separator className="my-6" />
         <div className="flex flex-col items-center gap-3 text-center text-xs text-muted-foreground sm:items-start sm:text-left">
-          <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 sm:justify-start">
+          <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 sm:justify-start">
             <span>
               Made with{" "}
               <span className="text-red-500" aria-hidden>
-              ❤️
+                ♥
               </span>{" "}
               by{" "}
               <a
@@ -85,7 +86,7 @@ export function SiteFooter() {
                 </span>
               ))}
             </nav>
-          </p>
+          </div>
           <p>
             © {new Date().getFullYear()}{" "}
             <a

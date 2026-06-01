@@ -137,4 +137,12 @@
   .font-serif {
     font-family: var(--font-serif);
   }
+  button:not(:disabled),
+  [data-slot="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  button:disabled,
+  [data-slot="button"]:disabled {
+    cursor: not-allowed;
+  }
 }

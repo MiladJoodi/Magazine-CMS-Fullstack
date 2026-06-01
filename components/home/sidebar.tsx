@@ -1,8 +1,11 @@
+import Link from "next/link";
+
 import { TrendingItem } from "@/components/home/trending-item";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { CATEGORIES } from "@/lib/data/mock-posts";
+import { getAllCategories } from "@/lib/mock";
+import { categoryHref } from "@/lib/category-url";
 import type { Post } from "@/lib/types/post";
 import { cn } from "@/lib/utils";
 
@@ -12,8 +15,10 @@ type SidebarProps = {
 };
 
 export function Sidebar({ trending, className }: SidebarProps) {
+  const categories = getAllCategories();
+
   return (
-    <aside className={cn("space-y-6", className)} id="categories">
+    <aside className={cn("space-y-6", className)}>
       <Card>
         <CardHeader>
           <CardTitle className="text-lg">Trending Now</CardTitle>
@@ -30,15 +35,21 @@ export function Sidebar({ trending, className }: SidebarProps) {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
+      <Card id="categories">
+        <CardHeader className="flex flex-row items-center justify-between gap-2">
           <CardTitle className="text-lg">Categories</CardTitle>
+          <Link
+            href="/categories"
+            className="text-xs font-medium text-muted-foreground hover:text-foreground"
+          >
+            View all
+          </Link>
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-2">
-            {CATEGORIES.map((category) => (
-              <Badge key={category} variant="outline">
-                {category}
+            {categories.map((category) => (
+              <Badge key={category.slug} variant="outline" render={<Link href={categoryHref(category.slug)} />}>
+                {category.name}
               </Badge>
             ))}
           </div>

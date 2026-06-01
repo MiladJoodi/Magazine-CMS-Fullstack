@@ -6,18 +6,18 @@ import { Sidebar } from "@/components/home/sidebar";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { ArticleBody } from "@/components/post/article-body";
-import { ArticleComments } from "@/components/post/article-comments";
+import { ArticleCommentsSection } from "@/components/post/article-comments-section";
 import { ArticleHeader } from "@/components/post/article-header";
 import { PostBackLink } from "@/components/post/post-back-link";
 import { RelatedPosts } from "@/components/post/related-posts";
 import { Separator } from "@/components/ui/separator";
-import { getCommentsForPost } from "@/lib/data/mock-comments";
 import {
   getAllPostSlugs,
+  getCommentsForPost,
   getPostBySlug,
   getRelatedPosts,
   getTrendingPosts,
-} from "@/lib/data/mock-posts";
+} from "@/lib/mock";
 
 type PostPageProps = {
   params: Promise<{ slug: string }>;
@@ -77,7 +77,11 @@ export default async function PostPage({ params }: PostPageProps) {
           <div className="space-y-10 lg:col-span-2">
             <Separator />
             <div className="mx-auto max-w-3xl">
-              <ArticleComments comments={comments} totalCount={post.commentCount} />
+              <ArticleCommentsSection
+                postSlug={slug}
+                initialComments={comments}
+                totalCount={post.commentCount}
+              />
             </div>
           </div>
           <aside className="space-y-6">

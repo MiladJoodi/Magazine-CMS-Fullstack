@@ -7,7 +7,7 @@ import {
   getFeaturedPost,
   getLatestPosts,
   getTrendingPosts,
-} from "@/lib/data/mock-posts";
+} from "@/lib/mock";
 
 export default function Home() {
   const featured = getFeaturedPost();

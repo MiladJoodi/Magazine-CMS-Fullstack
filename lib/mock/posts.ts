@@ -1,4 +1,11 @@
+import {
+  getCategoryByName,
+  getCategoryBySlug,
+  getCategoryNames,
+} from "@/lib/mock/categories";
 import type { Post, PostDetail } from "@/lib/types/post";
+
+export const CATEGORIES = getCategoryNames();
 
 function buildArticleBody(post: Post): string[] {
   const topic = post.category.toLowerCase();
@@ -25,7 +32,8 @@ function toPostDetail(post: Post): PostDetail {
   };
 }
 
-const MOCK_POSTS: Post[] = [
+/** Static post seed data */
+export const MOCK_POSTS: Post[] = [
   {
     id: "1",
     slug: "urban-design-future",
@@ -149,18 +157,19 @@ const MOCK_POSTS: Post[] = [
   },
 ];
 
-export const CATEGORIES = [
-  "Urbanism",
-  "Media",
-  "Travel",
-  "Culture",
-  "Science",
-  "Food",
-  "Business",
-  "Arts",
-  "Politics",
-  "Style",
-] as const;
+export function getPostsByCategory(categorySlugOrName: string): Post[] {
+  const category =
+    getCategoryBySlug(categorySlugOrName) ?? getCategoryByName(categorySlugOrName);
+
+  const categoryName = category?.name ?? categorySlugOrName;
+
+  return [...MOCK_POSTS]
+    .filter((post) => post.category.toLowerCase() === categoryName.toLowerCase())
+    .sort(
+      (a, b) =>
+        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+    );
+}
 
 export function getFeaturedPost(): Post {
   const featured = MOCK_POSTS.find((post) => post.featured);

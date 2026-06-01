@@ -21,13 +21,11 @@ export function getCommentsForPost(slug: string, limit = 5): Comment[] {
 
   return Array.from({ length: Math.min(limit, COMMENT_TEMPLATES.length) }, (_, i) => {
     const index = (seed + i) % COMMENT_TEMPLATES.length;
-    const dayOffset = i + 1;
+    const day = String(20 - i).padStart(2, "0");
     return {
       id: `${slug}-comment-${i + 1}`,
       author: COMMENT_AUTHORS[(seed + i) % COMMENT_AUTHORS.length],
-      publishedAt: new Date(
-        Date.now() - dayOffset * 86_400_000
-      ).toISOString(),
+      publishedAt: `2026-05-${day}T12:00:00.000Z`,
       body: COMMENT_TEMPLATES[index],
     };
   });

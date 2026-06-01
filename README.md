@@ -38,7 +38,7 @@ Full-stack magazine platform — **Next.js**, **Prisma**, **REST API**, comments
 | Language | TypeScript |
 | Styling | Tailwind CSS v4, shadcn/ui |
 | Icons | Lucide React |
-| Data (current) | Mock modules in `lib/data/` |
+| Data (current) | Mock modules in `lib/mock/` |
 | Data (planned) | Prisma ORM, PostgreSQL |
 
 ## Project structure
@@ -54,10 +54,15 @@ components/
   layout/                  # Header & footer
   ui/                      # shadcn components
 lib/
-  types/post.ts            # Post & Comment types
-  data/mock-posts.ts       # Mock posts & getters
-  data/mock-comments.ts    # Mock comments
+  mock/                    # All demo seed data & getters
+    index.ts               # Barrel export (@/lib/mock)
+    posts.ts               # Posts + article helpers
+    categories.ts          # Categories
+    authors.ts             # Authors (+ CMS localStorage extras)
+    comments.ts            # Comment templates per post
+  types/                   # Post, Comment, Category, Author
   post-url.ts              # URL helpers
+  category-url.ts
 ```
 
 ## Getting started
