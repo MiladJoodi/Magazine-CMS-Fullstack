@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# magazine-cms-fullstack
 
-## Getting Started
+Full-stack magazine platform — **Next.js**, **Prisma**, **REST API**, comments & views. A portfolio project showcasing editorial UI, article pages, and a clear path to a complete CMS backend.
 
-First, run the development server:
+**Author:** [Milad Joodi](https://github.com/MiladJoodi) · [LinkedIn](https://www.linkedin.com/in/joodi/) · [Repository](https://github.com/MiladJoodi/magazine-cms-fullstack)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## Overview
+
+**The Daily Chronicle** is a magazine-style content site with a homepage feed, trending sidebar, and individual article pages. The frontend is built with Next.js App Router and shadcn/ui. Data is currently mocked in TypeScript modules, structured so it can be swapped for Prisma and API routes without rewriting the UI.
+
+## Features
+
+### Implemented
+
+- Magazine homepage: header, featured hero, latest stories grid, trending sidebar, footer
+- Dynamic article pages at `/posts/[slug]` (SSG via `generateStaticParams`)
+- View and comment counts on cards and article headers
+- Mock comments section on article pages
+- Related stories and category badges
+- Responsive layout (mobile → desktop)
+- Editorial typography (Fraunces, Plus Jakarta Sans, Newsreader via `next/font`)
+
+### Planned (full-stack roadmap)
+
+- PostgreSQL + Prisma schema (posts, categories, comments, views)
+- Next.js Route Handlers / REST API
+- Real comment posting and view tracking
+- Admin dashboard for publishing content
+- Cover images with `next/image`
+
+## Tech stack
+
+| Layer | Tools |
+|-------|--------|
+| Framework | [Next.js 16](https://nextjs.org) (App Router, React 19) |
+| Language | TypeScript |
+| Styling | Tailwind CSS v4, shadcn/ui |
+| Icons | Lucide React |
+| Data (current) | Mock modules in `lib/data/` |
+| Data (planned) | Prisma ORM, PostgreSQL |
+
+## Project structure
+
+```
+app/
+  page.tsx                 # Homepage
+  posts/[slug]/page.tsx    # Article detail (SSG)
+  layout.tsx               # Root layout & fonts
+components/
+  home/                    # Homepage sections
+  post/                    # Article page sections
+  layout/                  # Header & footer
+  ui/                      # shadcn components
+lib/
+  types/post.ts            # Post & Comment types
+  data/mock-posts.ts       # Mock posts & getters
+  data/mock-comments.ts    # Mock comments
+  post-url.ts              # URL helpers
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Getting started
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Prerequisites
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Node.js 20+
+- npm (or pnpm / yarn)
 
-## Learn More
+### Install & run
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+git clone https://github.com/MiladJoodi/magazine-cms-fullstack.git
+cd magazine-cms-fullstack
+npm install
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Other commands
 
-## Deploy on Vercel
+```bash
+npm run build   # Production build
+npm run start   # Start production server
+npm run lint    # ESLint
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Sample routes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Route | Description |
+|-------|-------------|
+| `/` | Homepage with featured story and latest posts |
+| `/posts/urban-design-future` | Example article page |
+| `/posts/[slug]` | Any slug from mock data (10 articles) |
+
+## Author
+
+**Milad Joodi** — Freelance Frontend Developer
+
+- GitHub: [@MiladJoodi](https://github.com/MiladJoodi)
+- LinkedIn: [linkedin.com/in/joodi](https://www.linkedin.com/in/joodi/)
+- Project: [github.com/MiladJoodi/magazine-cms-fullstack](https://github.com/MiladJoodi/magazine-cms-fullstack)
+
+## License
+
+This project is private/portfolio work unless a license file is added separately.

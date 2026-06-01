@@ -1,7 +1,29 @@
 {
-  "name": "01",
+  "name": "magazine-cms-fullstack",
   "version": "0.1.0",
+  "description": "Full-stack magazine platform — Next.js, Prisma, REST API, comments & views (portfolio project by Milad Joodi)",
   "private": true,
+  "author": {
+    "name": "Milad Joodi",
+    "url": "https://github.com/MiladJoodi"
+  },
+  "homepage": "https://github.com/MiladJoodi/magazine-cms-fullstack#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MiladJoodi/magazine-cms-fullstack.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MiladJoodi/magazine-cms-fullstack/issues"
+  },
+  "keywords": [
+    "nextjs",
+    "typescript",
+    "magazine",
+    "cms",
+    "fullstack",
+    "portfolio",
+    "prisma"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
