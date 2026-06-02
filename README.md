@@ -1,4 +1,4 @@
-# magazine-cms-fullstack
+# magazine-cms-fullstack 
 
 Full-stack magazine platform — **Next.js**, **Prisma**, **REST API**, comments & views. A portfolio project showcasing editorial UI, article pages, and a clear path to a complete CMS backend.
 
