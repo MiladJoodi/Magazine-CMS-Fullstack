@@ -6,8 +6,6 @@ type RouteContext = {
 };
 
 export async function DELETE(_request: Request, context: RouteContext) {
-    console.log("context:", context);
-    console.log("params:", await context.params);
   const { slug } = await context.params;
 
   const category = await prisma.category.findUnique({ where: { slug } });
@@ -18,7 +16,7 @@ export async function DELETE(_request: Request, context: RouteContext) {
 
   // وقتی Post model داشتی، اینجا چک کن postCount > 0
 
-//   await prisma.category.delete({ where: { slug } });
+  await prisma.category.delete({ where: { slug } });
 
   return NextResponse.json({ ok: true });
 }
