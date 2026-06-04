@@ -42,3 +42,7 @@ next-env.d.ts
 
 /lib/generated/prisma
 /prisma/lib/generated/
+
+# Agents
+AGENTS.md
+CLAUDE.md
