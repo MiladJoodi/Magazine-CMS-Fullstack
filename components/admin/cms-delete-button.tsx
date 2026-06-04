@@ -11,7 +11,7 @@ type CmsDeleteButtonProps = {
   itemLabel: string;
   disabled?: boolean;
   disabledTitle?: string;
-  onDelete: () => DeleteResult;
+  onDelete: () => Promise<DeleteResult> | DeleteResult;
   onDeleted?: () => void;
 };
 
@@ -25,9 +25,9 @@ export function CmsDeleteButton({
   const [confirming, setConfirming] = useState(false);
   const [error, setError] = useState("");
 
-  function handleConfirm() {
+  async function handleConfirm() {
     setError("");
-    const result = onDelete();
+    const result = await Promise.resolve(onDelete());
     if (!result.ok) {
       setError(result.error);
       return;
