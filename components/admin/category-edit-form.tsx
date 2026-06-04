@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useUpdateCategory } from "@/lib/hooks/use-categories";
 import type { Category } from "@/lib/types/category";
+import { updateCategorySchema } from "@/lib/validations/category";
 import { cn } from "@/lib/utils";
 
 type CategoryEditFormProps = {
@@ -22,14 +23,29 @@ export function CategoryEditForm({
 }: CategoryEditFormProps) {
   const [name, setName] = useState(category.name);
   const [description, setDescription] = useState(category.description);
+  const [localError, setLocalError] = useState("");
 
   const update = useUpdateCategory();
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setLocalError("");
+
+    const parsed = updateCategorySchema.safeParse({ name, description });
+    if (!parsed.success) {
+      setLocalError(parsed.error.issues[0].message);
+      return;
+    }
+
 
     update.mutate(
-      { slug: category.slug, input: { name, description } },
+      {
+        slug: category.slug,
+        input: {
+          name: parsed.data.name,
+          description: parsed.data.description,
+        },
+      },
       { onSuccess: () => onSaved() }
     );
   }
@@ -58,6 +74,10 @@ export function CategoryEditForm({
           "focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
         )}
       />
+
+      {localError ? (
+        <p className="text-sm text-destructive" role="alert">{localError}</p>
+      ) : null}
 
       {update.error ? (
         <p className="text-sm text-destructive">{update.error.message}</p>

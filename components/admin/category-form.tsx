@@ -2,25 +2,33 @@
 
 import { useState, type FormEvent } from "react";
 import { CheckCircle2, Loader2 } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCreateCategory } from "@/lib/hooks/use-categories";
+import { createCategorySchema } from "@/lib/validations/category";
 import { cn } from "@/lib/utils";
 
 export function CategoryForm() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [success, setSuccess] = useState(false);
+  const [localError, setLocalError] = useState("");
 
   const create = useCreateCategory();
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSuccess(false);
+    setLocalError("");
+
+    const parsed = createCategorySchema.safeParse({ name, description });
+    if (!parsed.success) {
+      setLocalError(parsed.error.issues[0].message);
+      return;
+    }
 
     create.mutate(
-      { name, description },
+      { name: parsed.data.name, description: parsed.data.description },
       {
         onSuccess: () => {
           setName("");
@@ -71,6 +79,10 @@ export function CategoryForm() {
           )}
         />
       </div>
+
+      {localError ? (
+        <p className="text-sm text-destructive" role="alert">{localError}</p>
+      ) : null}
 
       {create.error ? (
         <p className="text-sm text-destructive" role="alert">
