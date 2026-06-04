@@ -1,6 +1,7 @@
 import type {
     Category,
     CreateCategoryInput,
+    UpdateCategoryInput,
 } from "@/lib/types/category";
 
 const BASE = "/api/categories";
@@ -32,8 +33,24 @@ export async function createCategory(
 export async function deleteCategory(slug: string): Promise<void> {
     const res = await fetch(`${BASE}/${slug}`, { method: "DELETE" });
     const data = await res.json();
-  
+
     if (!res.ok) {
-      throw new Error(data.error ?? "Failed to delete category");
+        throw new Error(data.error ?? "Failed to delete category");
     }
-  }
+}
+
+export async function updateCategory(
+    slug: string,
+    input: UpdateCategoryInput
+): Promise<Category> {
+    const res = await fetch(`${BASE}/${slug}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(input),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+        throw new Error(data.error ?? "Failed to update category");
+    }
+    return data as Category;
+}

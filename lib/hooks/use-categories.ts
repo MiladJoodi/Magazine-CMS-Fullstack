@@ -6,8 +6,9 @@ import {
   createCategory,
   deleteCategory,
   getCategories,
+  updateCategory,
 } from "@/lib/services/categories.service";
-import type { CreateCategoryInput } from "@/lib/types/category";
+import type { CreateCategoryInput, UpdateCategoryInput } from "@/lib/types/category";
 
 export function useCategories() {
   return useQuery({
@@ -32,6 +33,22 @@ export function useDeleteCategory() {
   
     return useMutation({
       mutationFn: (slug: string) => deleteCategory(slug),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["categories"] });
+      },
+    });
+  }
+
+  export function useUpdateCategory() {
+    const queryClient = useQueryClient();
+    return useMutation({
+      mutationFn: ({
+        slug,
+        input,
+      }: {
+        slug: string;
+        input: UpdateCategoryInput;
+      }) => updateCategory(slug, input),
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["categories"] });
       },

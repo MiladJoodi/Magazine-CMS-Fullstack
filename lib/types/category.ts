@@ -12,3 +12,8 @@ export type CreateCategoryInput = {
 export type CategoryApiError = {
   error: string;
 };
+
+export type UpdateCategoryInput = {
+  name: string;
+  description: string;
+};

@@ -1,9 +1,16 @@
 "use client";
 
+import { Fragment, useState } from "react";
+import { Pencil } from "lucide-react";
+
+import { CategoryEditForm } from "@/components/admin/category-edit-form";
 import { CmsDeleteButton } from "@/components/admin/cms-delete-button";
+import { Button } from "@/components/ui/button";
 import { useCategories, useDeleteCategory } from "@/lib/hooks/use-categories";
 
 export function CategoriesTable() {
+  const [editingSlug, setEditingSlug] = useState<string | null>(null);
+
   const { data: categories = [], isLoading, error } = useCategories();
   const deleteCategory = useDeleteCategory();
 
@@ -29,7 +36,10 @@ export function CategoriesTable() {
 
   if (error) {
     return (
-      <p className="rounded-xl border bg-card p-4 text-sm text-destructive" role="alert">
+      <p
+        className="rounded-xl border bg-card p-4 text-sm text-destructive"
+        role="alert"
+      >
         {error.message}
       </p>
     );
@@ -56,24 +66,52 @@ export function CategoriesTable() {
         </thead>
         <tbody>
           {categories.map((category) => (
-            <tr key={category.slug} className="border-b last:border-0">
-              <td className="px-4 py-3">
-                <p className="font-medium">{category.name}</p>
-              </td>
-              <td className="px-4 py-3 text-muted-foreground">{category.slug}</td>
-              <td className="px-4 py-3 text-muted-foreground">
-                {category.description}
-              </td>
-              <td className="px-4 py-3">
-                <div className="flex justify-end">
-                  <CmsDeleteButton
-                    itemLabel={category.name}
-                    disabled={deleteCategory.isPending}
-                    onDelete={() => handleDelete(category.slug)}
-                  />
-                </div>
-              </td>
-            </tr>
+            <Fragment key={category.slug}>
+              <tr className="border-b">
+                <td className="px-4 py-3">
+                  <p className="font-medium">{category.name}</p>
+                </td>
+                <td className="px-4 py-3 text-muted-foreground">
+                  {category.slug}
+                </td>
+                <td className="px-4 py-3 text-muted-foreground">
+                  {category.description}
+                </td>
+                <td className="px-4 py-3">
+                  <div className="flex justify-end gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        setEditingSlug((current) =>
+                          current === category.slug ? null : category.slug
+                        )
+                      }
+                    >
+                      <Pencil className="size-3.5" aria-hidden />
+                      {editingSlug === category.slug ? "Close" : "Edit"}
+                    </Button>
+                    <CmsDeleteButton
+                      itemLabel={category.name}
+                      disabled={deleteCategory.isPending}
+                      onDelete={() => handleDelete(category.slug)}
+                    />
+                  </div>
+                </td>
+              </tr>
+              {editingSlug === category.slug ? (
+                <tr className="border-b last:border-0">
+                  <td colSpan={4} className="px-4 py-3">
+                    <CategoryEditForm
+                      category={category}
+                      onCancel={() => setEditingSlug(null)}
+                      onSaved={() => setEditingSlug(null)}
+                    />
+                  </td>
+                </tr>
+              ) : null}
+            </Fragment>
           ))}
         </tbody>
       </table>
