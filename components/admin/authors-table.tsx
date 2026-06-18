@@ -1,29 +1,36 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-
-import { CmsDeleteButton } from "@/components/admin/cms-delete-button";
-import {
-  canDeleteAuthor,
-  countPostsByAuthor,
-  deleteDemoAuthor,
-  getAllAuthorsMerged,
-  getBaseAuthors,
-} from "@/lib/mock";
-import type { Author } from "@/lib/types/author";
+import { useAuthors } from "@/lib/hooks/use-authors";
 
 export function AuthorsTable() {
-  const [authors, setAuthors] = useState<Author[]>([]);
+  const { data: authors = [], isLoading, error } = useAuthors();
 
-  const refresh = useCallback(() => {
-    setAuthors(getAllAuthorsMerged());
-  }, []);
+  if (isLoading) {
+    return (
+      <p className="rounded-xl border bg-card p-4 text-sm text-muted-foreground">
+        Loading authors...
+      </p>
+    );
+  }
 
-  useEffect(() => {
-    refresh();
-  }, [refresh]);
+  if (error) {
+    return (
+      <p
+        className="rounded-xl border bg-card p-4 text-sm text-destructive"
+        role="alert"
+      >
+        {error.message}
+      </p>
+    );
+  }
 
-  const baseIds = new Set(getBaseAuthors().map((a) => a.id));
+  if (authors.length === 0) {
+    return (
+      <p className="rounded-xl border bg-card p-4 text-sm text-muted-foreground">
+        No authors yet. Add one with the form.
+      </p>
+    );
+  }
 
   return (
     <div className="overflow-x-auto rounded-xl border bg-card">
@@ -33,16 +40,11 @@ export function AuthorsTable() {
             <th className="px-4 py-3 font-medium">Name</th>
             <th className="px-4 py-3 font-medium">Slug</th>
             <th className="px-4 py-3 font-medium">Posts</th>
-            <th className="px-4 py-3 font-medium">Source</th>
-            <th className="px-4 py-3 font-medium text-right">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {authors.map((author) => {
-            const deletable = canDeleteAuthor(author.id);
-            const postCount = countPostsByAuthor(author.name);
-            return (
-            <tr key={author.id} className="border-b last:border-0">
+          {authors.map((author) => (
+            <tr key={author.slug} className="border-b last:border-0">
               <td className="px-4 py-3">
                 <p className="font-medium">{author.name}</p>
                 {author.bio ? (
@@ -50,30 +52,9 @@ export function AuthorsTable() {
                 ) : null}
               </td>
               <td className="px-4 py-3 text-muted-foreground">{author.slug}</td>
-              <td className="px-4 py-3 text-muted-foreground">
-                {countPostsByAuthor(author.name)}
-              </td>
-              <td className="px-4 py-3 text-muted-foreground">
-                {baseIds.has(author.id) ? "Mock data" : "Added in CMS"}
-              </td>
-              <td className="px-4 py-3">
-                <div className="flex justify-end">
-                  <CmsDeleteButton
-                    itemLabel={author.name}
-                    disabled={!deletable}
-                    disabledTitle={
-                      postCount > 0
-                        ? `${postCount} post(s) use this author`
-                        : undefined
-                    }
-                    onDelete={() => deleteDemoAuthor(author.id)}
-                    onDeleted={refresh}
-                  />
-                </div>
-              </td>
+              <td className="px-4 py-3 text-muted-foreground">—</td>
             </tr>
-          );
-          })}
+          ))}
         </tbody>
       </table>
     </div>
