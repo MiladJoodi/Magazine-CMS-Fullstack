@@ -1,6 +1,8 @@
 export type Author = {
   id: string;
-  name: string;
   slug: string;
-  bio?: string;
+  name: string;
+  bio?: string | null;
+  createdAt: Date;
+  updatedAt: Date;
 };
