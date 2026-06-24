@@ -1,12 +1,9 @@
 "use client";
 
-import { useState } from "react";
-
 import { AuthorForm } from "@/components/admin/author-form";
 import { AuthorsTable } from "@/components/admin/authors-table";
 
 export default function AdminAuthorsPage() {
-  const [tableKey, setTableKey] = useState(0);
 
   return (
     <div className="space-y-8">
@@ -20,8 +17,8 @@ export default function AdminAuthorsPage() {
       </div>
 
       <div className="grid gap-8 lg:grid-cols-[minmax(0,320px)_1fr]">
-        <AuthorForm onAdded={() => setTableKey((k) => k + 1)} />
-        <AuthorsTable key={tableKey} />
+        <AuthorForm />
+        <AuthorsTable />
       </div>
     </div>
   );
