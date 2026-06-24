@@ -2,41 +2,37 @@
 
 import { useState, type FormEvent } from "react";
 import { CheckCircle2, Loader2 } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { addDemoAuthor } from "@/lib/mock";
 import { cn } from "@/lib/utils";
+import { useCreateAuthor } from "@/lib/hooks/use-authors";
+import { createAuthorSchema } from "@/lib/validations/author";
 
-type AuthorFormProps = {
-  onAdded?: () => void;
-};
 
-export function AuthorForm({ onAdded }: AuthorFormProps) {
+export function AuthorForm() {
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
-  const [error, setError] = useState("");
-  const [status, setStatus] = useState<"idle" | "saving" | "success">("idle");
+  const [localError, setLocalError] = useState("");
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  const create = useCreateAuthor();
+
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setError("");
-    setStatus("saving");
-    await new Promise((resolve) => setTimeout(resolve, 600));
+    setLocalError("");
 
-    const result = addDemoAuthor({ name, bio });
-    setStatus("idle");
-
-    if (!result.ok) {
-      setError(result.error);
+    const parsed = createAuthorSchema.safeParse({ name, bio });
+    if (!parsed.success) {
+      setLocalError(parsed.error.issues[0].message);
       return;
     }
 
-    setName("");
-    setBio("");
-    setStatus("success");
-    onAdded?.();
-    setTimeout(() => setStatus("idle"), 2000);
+    create.mutate({ name: parsed.data.name, bio: parsed.data.bio }, {
+      onSuccess: () => {
+        setName("");
+        setBio("");
+      },
+        });
   }
 
   return (
@@ -55,7 +51,7 @@ export function AuthorForm({ onAdded }: AuthorFormProps) {
           onChange={(e) => setName(e.target.value)}
           placeholder="Jane Doe"
           required
-          disabled={status === "saving"}
+          disabled={create.isPending}
         />
       </div>
       <div className="space-y-2">
@@ -67,26 +63,31 @@ export function AuthorForm({ onAdded }: AuthorFormProps) {
           rows={2}
           value={bio}
           onChange={(e) => setBio(e.target.value)}
-          disabled={status === "saving"}
+          disabled={create.isPending}
           className={cn(
             "w-full rounded-lg border border-input bg-transparent px-2.5 py-2 text-sm outline-none",
             "focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30"
           )}
         />
       </div>
-      {error ? (
+      {localError ? (
         <p className="text-sm text-destructive" role="alert">
-          {error}
+          {localError}
         </p>
       ) : null}
-      {status === "success" ? (
+      {create.error ? (
+        <p className="text-sm text-destructive" role="alert">
+          {create.error.message}
+        </p>
+      ) : null}
+      {create.isSuccess ? (
         <p className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400">
           <CheckCircle2 className="size-4" aria-hidden />
-          Author added (saved in browser for demo).
+          Author saved to database
         </p>
       ) : null}
-      <Button type="submit" disabled={status === "saving"}>
-        {status === "saving" ? (
+      <Button type="submit" disabled={create.isPending}>
+        {create.isPending ? (
           <>
             <Loader2 className="animate-spin" aria-hidden />
             Adding...

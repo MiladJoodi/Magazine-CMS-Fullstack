@@ -6,3 +6,8 @@ export type Author = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type createAuthorInput = {
+  name: string;
+  bio?: string | null;
+}
