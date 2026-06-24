@@ -12,6 +12,7 @@ import { createAuthorSchema } from "@/lib/validations/author";
 export function AuthorForm() {
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
+  const [success, setSuccess] = useState(false);
   const [localError, setLocalError] = useState("");
 
   const create = useCreateAuthor();
@@ -19,6 +20,7 @@ export function AuthorForm() {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setSuccess(false);
     setLocalError("");
 
     const parsed = createAuthorSchema.safeParse({ name, bio });
@@ -31,8 +33,10 @@ export function AuthorForm() {
       onSuccess: () => {
         setName("");
         setBio("");
+        setSuccess(true);
+        setTimeout(() => setSuccess(false), 2000);
       },
-        });
+    });
   }
 
   return (
@@ -80,7 +84,7 @@ export function AuthorForm() {
           {create.error.message}
         </p>
       ) : null}
-      {create.isSuccess ? (
+      {success ? (
         <p className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400">
           <CheckCircle2 className="size-4" aria-hidden />
           Author saved to database
