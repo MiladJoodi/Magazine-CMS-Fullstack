@@ -14,17 +14,17 @@ function getDeletedAuthorIds(): Set<string> {
 
 /** Static author seed data */
 export const MOCK_AUTHORS: Author[] = [
-  { id: "milad-joodi", name: "Milad Joodi", slug: "milad-joodi", bio: "Editor & developer." },
-  { id: "elena-marsh", name: "Elena Marsh", slug: "elena-marsh" },
-  { id: "james-okonkwo", name: "James Okonkwo", slug: "james-okonkwo" },
-  { id: "sofia-reyes", name: "Sofia Reyes", slug: "sofia-reyes" },
-  { id: "marcus-chen", name: "Marcus Chen", slug: "marcus-chen" },
-  { id: "priya-nair", name: "Priya Nair", slug: "priya-nair" },
-  { id: "tom-bradley", name: "Tom Bradley", slug: "tom-bradley" },
-  { id: "nina-kowalski", name: "Nina Kowalski", slug: "nina-kowalski" },
-  { id: "liam-foster", name: "Liam Foster", slug: "liam-foster" },
-  { id: "aisha-williams", name: "Aisha Williams", slug: "aisha-williams" },
-  { id: "claire-dubois", name: "Claire Dubois", slug: "claire-dubois" },
+  { id: "milad-joodi", name: "Milad Joodi", slug: "milad-joodi", bio: "Editor & developer.", createdAt: new Date(), updatedAt: new Date() },
+  { id: "elena-marsh", name: "Elena Marsh", slug: "elena-marsh", createdAt: new Date(), updatedAt: new Date() },
+  { id: "james-okonkwo", name: "James Okonkwo", slug: "james-okonkwo", createdAt: new Date(), updatedAt: new Date() },
+  { id: "sofia-reyes", name: "Sofia Reyes", slug: "sofia-reyes", createdAt: new Date(), updatedAt: new Date() },
+  { id: "marcus-chen", name: "Marcus Chen", slug: "marcus-chen", createdAt: new Date(), updatedAt: new Date() },
+  { id: "priya-nair", name: "Priya Nair", slug: "priya-nair", createdAt: new Date(), updatedAt: new Date() },
+  { id: "tom-bradley", name: "Tom Bradley", slug: "tom-bradley", createdAt: new Date(), updatedAt: new Date() },
+  { id: "nina-kowalski", name: "Nina Kowalski", slug: "nina-kowalski", createdAt: new Date(), updatedAt: new Date() },
+  { id: "liam-foster", name: "Liam Foster", slug: "liam-foster", createdAt: new Date(), updatedAt: new Date() },
+  { id: "aisha-williams", name: "Aisha Williams", slug: "aisha-williams", createdAt: new Date(), updatedAt: new Date() },
+  { id: "claire-dubois", name: "Claire Dubois", slug: "claire-dubois", createdAt: new Date(), updatedAt: new Date() },
 ];
 
 export function getStoredAuthors(): Author[] {
@@ -98,6 +98,8 @@ export function addDemoAuthor(input: {
     name,
     slug,
     bio: input.bio?.trim() || undefined,
+    createdAt: new Date(),
+    updatedAt: new Date(),
   };
 
   const stored = getStoredAuthors();
